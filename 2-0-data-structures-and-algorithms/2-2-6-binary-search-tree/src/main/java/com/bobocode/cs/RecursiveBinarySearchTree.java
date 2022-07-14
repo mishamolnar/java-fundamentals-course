@@ -2,6 +2,7 @@ package com.bobocode.cs;
 
 import com.bobocode.util.ExerciseNotCompletedException;
 
+import java.util.Stack;
 import java.util.function.Consumer;
 
 public class RecursiveBinarySearchTree<T extends Comparable<T>> implements BinarySearchTree<T> {
@@ -75,7 +76,20 @@ public class RecursiveBinarySearchTree<T extends Comparable<T>> implements Binar
 
     @Override
     public void inOrderTraversal(Consumer<T> consumer) {
-        iterate(root, consumer);
+        Stack<Node<T>> stack = new Stack<>();
+        addAllLeftToStack(stack, root);
+        while (!stack.isEmpty()) {
+            Node<T> curr = stack.pop();
+            consumer.accept(curr.value);
+            if (curr.right != null) addAllLeftToStack(stack, curr.right);
+        }
+    }
+
+    private void addAllLeftToStack(Stack<Node<T>> stack, Node<T> node) {
+        while (node != null) {
+            stack.add(node);
+            node = node.left;
+        }
     }
 
     private void iterate(Node<T> node, Consumer<T> consumer) {
