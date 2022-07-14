@@ -10,6 +10,9 @@ import com.bobocode.util.ExerciseNotCompletedException;
  * @param <T> a generic parameter
  */
 public class LinkedQueue<T> implements Queue<T> {
+    private Node<T> head;
+    private Node<T> tail;
+    private int size = 0;
 
     /**
      * Adds an element to the end of the queue.
@@ -17,7 +20,14 @@ public class LinkedQueue<T> implements Queue<T> {
      * @param element the element to add
      */
     public void add(T element) {
-        throw new ExerciseNotCompletedException(); // todo: implement this method
+        if (tail == null) {
+            tail = new Node<>(element);
+            head = tail;
+        } else {
+            tail.next = new Node<>(element);
+            tail = tail.next;
+        }
+        size++;
     }
 
     /**
@@ -26,7 +36,12 @@ public class LinkedQueue<T> implements Queue<T> {
      * @return an element that was retrieved from the head or null if queue is empty
      */
     public T poll() {
-        throw new ExerciseNotCompletedException(); // todo: implement this method
+        if (head == null) return null;
+        T toReturn = head.value;
+        size--;
+        head = head.next;
+        if (head == null) tail = null;
+        return toReturn;
     }
 
     /**
@@ -35,7 +50,7 @@ public class LinkedQueue<T> implements Queue<T> {
      * @return an integer value that is a size of queue
      */
     public int size() {
-        throw new ExerciseNotCompletedException(); // todo: implement this method
+        return size;
     }
 
     /**
@@ -44,6 +59,21 @@ public class LinkedQueue<T> implements Queue<T> {
      * @return {@code true} if the queue is empty, returns {@code false} if it's not
      */
     public boolean isEmpty() {
-        throw new ExerciseNotCompletedException(); // todo: implement this method
+        return head == null;
+    }
+
+    private static class Node<T> {
+
+        T value;
+        Node<T> next;
+
+        public Node(T val) {
+            this.value = val;
+        }
+
+        public Node(T val, Node<T> next) {
+            this.value = val;
+            this.next = next;
+        }
     }
 }
